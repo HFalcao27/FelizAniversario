@@ -1,0 +1,29 @@
+/* LISTA DE ANIVERSÁRIOS*/
+.lista-aniversarios {
+    max-width: 500px;
+    margin: 0 auto;
+}
+
+.lista-aniversarios ul {
+    list-style: none;
+    padding: 0;
+}
+
+.lista-aniversarios li {
+    background-color: #1a1a2e;
+    color: white; /*Cor da Letra*/
+    font-family: 'Poppins', sans-serif;
+    padding: 15px;
+    margin-bottom: 10px;
+    border-radius: 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.lista-aniversarios button {
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 1.1rem;
+}

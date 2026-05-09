@@ -1,0 +1,21 @@
+.cabecario{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    background-color: #FBEED3;
+    padding: 1px 799px 1px 799px;
+    text-decoration: none;
+}
+
+.cabecario_paragraph{
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    margin: 20px;
+    color: #6B5D4D;
+    cursor: pointer;
+}
+
+.cabecario_paragraph:hover{
+    color:#429398;
+    text-decoration: none;
+}

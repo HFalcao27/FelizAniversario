@@ -1,0 +1,212 @@
+🎯 OBJETIVO DA INTEGRAÇÃO
+
+Substituir isto ❌:
+
+js-
+
+localStorage
+
+
+scss-
+
+Front-end  →  API REST (Java Spring Boot)  →  MySQL
+
+
+🧠 ARQUITETURA FINAL
+
+yaml-
+
+HTML / JS
+   |
+   | fetch()
+   ↓
+Spring Boot API
+   |
+   ↓
+MySQL
+
+1️⃣ BACKEND – CRIAR A API REST
+📁 Controller – AniversarioController.java
+
+java-
+
+@RestController
+@RequestMapping("/api/aniversarios")
+@CrossOrigin(origins = "*") // libera o front
+public class AniversarioController {
+
+    private final AniversarioRepository repository;
+
+    public AniversarioController(AniversarioRepository repository) {
+        this.repository = repository;
+    }
+
+    // 🔹 LISTAR
+    @GetMapping
+    public List<Aniversario> listar() {
+        return repository.findAll();
+    }
+
+    // 🔹 SALVAR
+    @PostMapping
+    public Aniversario salvar(@RequestBody Aniversario aniversario) {
+        return repository.save(aniversario);
+    }
+
+    // 🔹 EDITAR
+    @PutMapping("/{id}")
+    public Aniversario editar(
+            @PathVariable Long id,
+            @RequestBody Aniversario dados) {
+
+        Aniversario a = repository.findById(id)
+                .orElseThrow();
+
+        a.setNome(dados.getNome());
+        a.setTelefone(dados.getTelefone());
+        a.setMensagem(dados.getMensagem());
+        a.setDataAniversario(dados.getDataAniversario());
+        a.setHoraEnvio(dados.getHoraEnvio());
+
+        return repository.save(a);
+    }
+
+    // 🔹 REMOVER
+    @DeleteMapping("/{id}")
+    public void remover(@PathVariable Long id) {
+        repository.deleteById(id);
+    }
+}
+
+
+2️⃣ FRONT-END – CONFIGURAÇÃO BASE
+📌 URL BASE DA API
+
+No JS, no topo do arquivo:
+
+js-
+const API_URL = "http://localhost:8080/api/aniversarios";
+
+3️⃣ FRONT-END – SALVAR ANIVERSÁRIO (POST)
+🔁 Substitua salvarEvento()
+
+js-
+
+function salvarEvento() {
+    const aniversario = {
+        nome: tituloInput.value,
+        telefone: telefoneInput.value,
+        mensagem: mensagemInput.value,
+        dataAniversario: dataInput.value,
+        horaEnvio: "09:00"
+    };
+
+    fetch(API_URL, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(aniversario)
+    })
+    .then(res => res.json())
+    .then(() => {
+        fecharModal();
+        renderCalendario();
+    });
+}
+
+✅ Agora salva direto no banco MySQL
+
+4️⃣ FRONT-END – LISTAR ANIVERSÁRIOS (GET)
+🔁 Em aniversariossalvos.js
+
+js-
+
+function listarAniversarios() {
+    fetch(API_URL)
+        .then(res => res.json())
+        .then(aniversarios => {
+            lista.innerHTML = "";
+
+            aniversarios.forEach(item => {
+                const li = document.createElement("li");
+
+                li.innerHTML = `
+                    <span>
+                        <strong>${item.nome}</strong><br>
+                        🎂 ${formatarData(item.dataAniversario)}<br>
+                        📞 ${item.telefone}<br>
+                        💬 ${item.mensagem || ""}
+                    </span>
+                    <div>
+                        <button onclick="enviarWhatsApp('${item.nome}', '${item.telefone}', '${item.mensagem || ""}')">📲</button>
+                        <button onclick="editar(${item.id})">✏️</button>
+                        <button onclick="remover(${item.id})">🗑️</button>
+                    </div>
+                `;
+
+                lista.appendChild(li);
+            });
+        });
+}
+
+5️⃣ FRONT-END – REMOVER (DELETE)
+
+js-
+
+function remover(id) {
+    if (!confirm("Deseja remover este aniversário?")) return;
+
+    fetch(`${API_URL}/${id}`, {
+        method: "DELETE"
+    })
+    .then(() => listarAniversarios());
+}
+
+6️⃣ FRONT-END – EDITAR (PUT)
+js-
+
+function salvarEdicao() {
+    const aniversario = {
+        nome: editTitulo.value,
+        telefone: editTelefone.value,
+        mensagem: editMensagem.value,
+        dataAniversario: editData.value,
+        horaEnvio: "09:00"
+    };
+
+    fetch(`${API_URL}/${idEditando}`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(aniversario)
+    })
+    .then(() => {
+        fecharModalEdit();
+        listarAniversarios();
+    });
+}
+
+7️⃣ AJUSTE NO CALENDÁRIO (renderCalendario)
+
+Agora o calendário deve buscar da API, não do localStorage:
+
+js-
+
+function marcarAniversarios() {
+    fetch(API_URL)
+        .then(res => res.json())
+        .then(eventos => {
+            eventos.forEach(evento => {
+                const data = new Date(evento.dataAniversario);
+                if (
+                    data.getMonth() === mesAtual &&
+                    data.getFullYear() === anoAtual
+                ) {
+                    document.querySelectorAll(".days div")
+                        .forEach(dia => {
+                            if (Number(dia.textContent) === data.getDate()) {
+                                dia.style.backgroundColor = "#ffcc00";
+                            }
+                        });
+                }
+            });
+        });
+}

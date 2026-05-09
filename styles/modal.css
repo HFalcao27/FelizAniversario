@@ -1,0 +1,50 @@
+.modal {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.6);
+    display: none; /*Para aparecer e desaparecer apertar none*/
+    justify-content: center;
+    align-items: center;
+}
+
+.modal__oculto {
+    background-color: #1a1a2e;
+    padding: 25px;
+    border-radius: 12px;
+    width: 90%;
+    max-width: 320px;
+    text-align: center;
+}
+
+.modal__oculto h3 {
+    margin-bottom: 15px;
+}
+
+.modal__oculto input {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 10px;
+    border-radius: 6px;
+    border: none;
+    outline: none;
+}
+
+.modal__oculto button {
+    width: 100%;
+    padding: 10px;
+    margin-top: 5px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: 600;
+}
+
+.modal__oculto button:first-of-type {
+    background-color: #00e0ff;
+    color: #000;
+}
+
+.modal__oculto button:last-of-type {
+    background-color: #ff4d4d;
+    color: #fff;
+}
