@@ -1,10 +1,9 @@
-// ============================
-// VARIÁVEIS GLOBAIS
-// ============================
+// VARIÁVEIS 
+
 const daysContainer = document.getElementById("days");
 const monthYear = document.getElementById("meseano");
 const modal = document.getElementById("modal");
-const tituloInput = document.getElementById("titulo");
+const tituloInput = document.getElementById("nome");
 const dataInput = document.getElementById("data");
 const telefoneInput = document.getElementById("telefone");
 const mensagemInput = document.getElementById("mensagem");
@@ -22,9 +21,8 @@ const meses = [
     "Setembro", "Outubro", "Novembro", "Dezembro"
 ];
 
-// ============================
 // CARREGAR CALENDÁRIO
-// ============================
+
 function renderCalendario() {
     daysContainer.innerHTML = "";
 
@@ -60,9 +58,9 @@ function renderCalendario() {
     marcarAniversarios();
 }
 
-// ============================
+
 // MUDAR MÊS
-// ============================
+
 function prevMonth() {
     mesAtual--;
     if (mesAtual < 0) {
@@ -81,9 +79,9 @@ function nextMonth() {
     renderCalendario();
 }
 
-// ============================
+
 // MODAL
-// ============================
+
 function abrirModal(dia) {
     diaSelecionado = dia;
     modal.style.display = "flex";
@@ -102,16 +100,16 @@ function fecharModal() {
 
 
 
-// ============================
+
 // SALVAR EVENTO
-// ============================
+
 function salvarEvento() {
-    const titulo = tituloInput.value;
+    const nome = tituloInput.value;
     const data = dataInput.value;
     const telefone = telefoneInput.value;
     const mensagem = mensagemInput.value;
 
-    if (!titulo || !data || !telefone) {
+    if (!nome || !data || !telefone) {
         alert("Preencha nome, data e telefone!");
         return;
     }
@@ -119,7 +117,7 @@ function salvarEvento() {
     const eventos = JSON.parse(localStorage.getItem("aniversarios")) || [];
 
     eventos.push({
-        titulo,
+        nome,
         data,
         telefone,
         mensagem
@@ -127,13 +125,28 @@ function salvarEvento() {
 
     localStorage.setItem("aniversarios", JSON.stringify(eventos));
 
+    fetch("salvar.php", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/x-www-form-urlencoded"
+    },
+    body: `nome=${encodeURIComponent(nome)}
+    &data_niver=${encodeURIComponent(data)}
+    &contato=${encodeURIComponent(telefone)}
+    &mensagem=${encodeURIComponent(mensagem)}`
+})
+.then(res => res.text())
+.then(resposta => {
+    console.log(resposta);
+});
+
     fecharModal();
     renderCalendario();
 }
 
-// ============================
+
 // MARCAR ANIVERSÁRIOS
-// ============================
+
 function marcarAniversarios() {
     const eventos = JSON.parse(localStorage.getItem("aniversarios")) || [];
     const dias = document.querySelectorAll(".days div");
@@ -146,14 +159,13 @@ function marcarAniversarios() {
                 if (Number(el.textContent) === dia) {
                     el.style.backgroundColor = "#ffcc00";
                     el.style.color = "#000";
-                    el.title = evento.titulo;
+                    el.title = evento.nome;
                 }
             });
         }
     });
 }
 
-// ============================
-// INICIAR
-// ============================
+// TESTAR PARA VER SE DA CERTO.
+
 renderCalendario();

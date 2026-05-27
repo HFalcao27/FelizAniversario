@@ -1,3 +1,15 @@
+<?php
+
+require_once 'backend/conexao.php'; // backend porque é outra pasta.
+
+$sql = $pdo->prepare("SELECT * FROM aniversariantes");
+
+$sql->execute();
+
+$aniversarios = $sql->fetchAll();
+
+?>
+
 <!DOCTYPE html>
 <html lang="pt-br">
     <head>
@@ -17,13 +29,14 @@
         <link rel="stylesheet" href="./styles/style.css">
     </head>
 
-<header class="cabecario">
-    <a href="./index.html"><p class="cabecario_paragraph">Calendário</p></a> 
-    <a href="./aniversariossalvos.html"><p class="cabecario_paragraph">Aniversários Salvos</p></a>
+    <body class="container">
 
-</header>
+        <header class="cabecario">
+            <a href="index.php"><p class="cabecario_paragraph">Calendário</p></a> 
+            <a href="aniversariossalvos.php"><p class="cabecario_paragraph">Aniversários Salvos</p></a>
 
-<body class="container">
+        </header>
+
     <h1 class="paragraph">Feliz Aniversário</h1>
     <section>
             <div class="container__calendario">
@@ -41,20 +54,31 @@
             </div>
 
     </section>
-
-            <!-- Modal -->
+        <form action="backend/salvar.php" method="POST"> <!--Esse action está servindo para salvar no backend-->
             <div id="modal" class="modal">
-            <div class="modal__oculto">
+            <div class="modal__oculto"
+            style="background-color: rgb(34, 39, 113);
+                    display: flex;
+                    flex-direction: column;
+                    padding: 10px 30px 30px 30px;
+                    border-radius: 30px;
+                    width: 400px 300px;
+                    gap: 10px;">
                 <h3>Aniversário de Quem?</h3>
-                <input type="text" id="titulo" placeholder="Quem e quando está aniversariando?">
-                <input type="date" id="data">
-                <input type="tel" id="telefone" placeholder="Telefone (Ex: 11999999999)">
-                <input type="text" id="mensagem" placeholder="Mensagem de aniversário (opcional)">
+                <input type="text" name="nome" id="titulo" placeholder="Quem e quando está aniversariando?">
+                <input type="date" name="data_niver" id="data">
+                <input type="tel" name="contato" id="telefone" placeholder="Telefone (Ex: 11999999999)">
+                <input type="text" name="mensagem" id="mensagem" placeholder="Mensagem de aniversário (opcional)">
 
-                <button onclick="salvarEvento()">Salvar</button>
+                <button type="submit">Salvar</button> <!--onclick="salvarEvento()"-->
                 <button onclick="fecharModal()">Cancelar</button>
             </div>
             </div>
-</body>
 
-<script src="./js/script.js"></script>
+            <script src="./js/script.js"></script>
+
+        </form>
+
+    </body>
+
+</html>
