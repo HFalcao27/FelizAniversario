@@ -34,7 +34,7 @@ $aniversarios = $sql->fetchAll();
 <body class="bodycontainer">
 
 <header class="cabecario">
-    <a href="index.php">
+    <a href="calendario.php">
         <p class="cabecario_paragraph">Calendário</p>
     </a>
     <a href="aniversariossalvos.php">

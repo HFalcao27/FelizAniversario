@@ -38,3 +38,5 @@ foreach($aniversariantes as $aniversario){
 
     echo "Mensagem enviada para $nome <br>";
 }
+
+?>

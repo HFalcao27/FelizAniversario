@@ -14,9 +14,7 @@ if (isset($_POST['nome'])) {
 
     $sql->execute([$nome,$data_niver,$contato,$mensagem]);
 
-    /*echo "Aniversário salvo com sucesso!";*/
-
-    header("Location: ../index.php"); //Serve para que depois que o comando for dado de salvar, editar ele volte para a página.
+    header("Location: ../calendario.php"); //Serve para que depois que o comando for dado de salvar, editar ele volte para a página.
 exit;
 
 }
