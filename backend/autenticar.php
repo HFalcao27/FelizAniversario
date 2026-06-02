@@ -24,7 +24,10 @@ if ($sql->rowCount() > 0) {
 
 } else {
 
-    echo "Email/telefone ou senha incorretos";
+    $_SESSION['erro'] = "Email/telefone ou senha incorretos"; //Isso aqui está indicando que está errado. no index vai apontar printar!
+
+    header("Location: ../index.php");
+    exit;
 
 }
 ?>

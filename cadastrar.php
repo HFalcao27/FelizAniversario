@@ -8,8 +8,6 @@ $sql->execute();
 
 $usuarios = $sql->fetchAll();
 
-print_r($usuarios);
-
 ?>
 
 <!DOCTYPE html>

@@ -1,10 +1,21 @@
 <?php
 
-session_start();
 require_once 'backend/conexao.php';
-
+session_start();
 
 ?>
+
+<?php if(isset($_SESSION['erro'])): ?>  <!--*Estudar isso com calma. Como assim pode abrir duas abas de php? O QUE ESTÁ AQUI É DA LINHA 27 DO AUTENTICAR.PHP*/ -->
+    <p style="
+        color: red;
+        text-align: center;
+        font-family: Poppins, sans-serif;
+        background-color: yellow;
+    ">
+        <?= $_SESSION['erro']; ?>
+    </p>
+    <?php unset($_SESSION['erro']); ?>
+<?php endif; ?>
 
 
 <!DOCTYPE html>
