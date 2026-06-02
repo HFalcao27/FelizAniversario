@@ -1,18 +1,30 @@
 <?php
 
 session_start();
+require_once 'conexao.php';
 
-$usuario = $_POST['usuario'];
-$senha = $_POST['senha'];
+$login = $_POST['login'] ?? '';
+$senha = $_POST['senha'] ?? '';
 
-if($usuario == "admin" && $senha == "123"){
+$sql = $pdo->prepare("SELECT *FROM usuarios WHERE (email = :login OR numero_telefone = :login) AND senha = :senha");
 
-    $_SESSION['login'] = true;
+$sql->execute([
+    ':login' => $login,
+    ':senha' => $senha]);
 
-    header("Location: index.php");
+if ($sql->rowCount() > 0) {
 
-}else{
+    $dados = $sql->fetch();
 
-    echo "Login inválido";
+    $_SESSION['login'] = $dados['id'];
+    $_SESSION['nome'] = $dados['nome'];
+
+    header("Location: ../calendario.php");
+    exit;
+
+} else {
+
+    echo "Email/telefone ou senha incorretos";
 
 }
+?>

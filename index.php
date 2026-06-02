@@ -1,13 +1,9 @@
 <?php
 
-/*session_start();
+session_start();
+require_once 'backend/conexao.php';
 
-if(!isset($_SESSION['login'])){
 
-    header("Location: login.php");
-    exit;
-
-}*/
 ?>
 
 
@@ -19,7 +15,6 @@ if(!isset($_SESSION['login'])){
        <meta name="viewport" content="width=device-width, initial-scale=1.0">
  
         <title>login</title>
-        <link rel="stylesheet" href="./style/reset.css"> 
         <link rel="preconnect" href="https://fonts.googleapis.com">
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
         <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
@@ -37,15 +32,15 @@ if(!isset($_SESSION['login'])){
         padding:120px;
         ">Login</h2>
 
-            <form>
+            <form method="POST" action="backend/autenticar.php">
         <div class="mb-3">
             <label for="exampleInputEmail1" class="form-label">Email ou Telefone:</label>
-            <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
+            <input name="login" type="text" class="form-control" placeholder="Email ou Telefone"  id="exampleInputEmail1" aria-describedby="emailHelp">
             
         </div>
         <div class="mb-3">
             <label for="exampleInputPassword1" class="form-label">Senha:</label>
-            <input type="password" class="form-control" id="exampleInputPassword1">
+            <input name="senha" type="password" class="form-control" placeholder="Senha" id="exampleInputPassword1">
         </div>
         <div class="mb-3 form-check">
             <input type="checkbox" id="exampleCheck1">
